@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+     integrity="sha512-fmclZRtREgPhQkXAB/GI27mBaPjFyJoFw4cIc3qHe0naq4t9j+8U1n5lCin2i5ylb2z3XsHqD0+9zYtsa5OvmA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Brazo</title>
+    <style>
+        
+        .boton-circular {
+            display: inline-block;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .boton-circular:hover {
+            background-color: #2980b9; /* Cambia el color al pasar el ratón sobre el botón */
+        }
+
+        </style>
+</head>
+<body>
+    <h1>BRAZO ROBOTICO</h1>
+    <table class="default" align="center" border="1px">
+        <tr>
+            <td colspan="3">Abre/cierra pinza :Par 1: 55 - 67 <p id="status1">Estado actual: 67</p></td>
+            <td colspan="3">Mover Parte superior :Par 2: 120 - 180 <p id="status2">Estado actual: 120</p></td>
+        </tr>
+        <tr>
+            <td><button class="boton-circular" id="button1_decrease" onmousedown="startInterval('button1_decrease', 'status1', 55, 67, 150)"
+                 >🡘</button></td>
+            <td><img src="{% load static %}{% static 'pinza.png' %}" width="150" height="150" alt="Mi Imagen"></td>
+            <td><button class="boton-circular" id="button1_increase" onmousedown="startInterval('button1_increase', 'status1', 55, 67,150)"
+                 >↹</button></td>
+
+
+
+            <td><button class="boton-circular" id="button2_decrease" onmousedown="startInterval('button2_decrease', 'status2', 120, 180,100)"
+                >🡡</button></td>
+            <td><img src="{% load static %}{% static 'subir.png' %}" width="150" height="150" alt="Mi Imagen"></td>
+            <td><button class="boton-circular" id="button2_increase" onmousedown="startInterval('button2_increase', 'status2', 120, 180,100)"
+                >🡣</button></td>
+        </tr>
+        <tr>
+            <td colspan="3">Mover parte inferior :Par 3: 60 - 150 <p id="status3">Estado actual: 60</p></td>
+            <td colspan="3">Mover base :Par 4: 0 - 180 <p id="status4">Estado actual: 0</p></td>
+        </tr>
+        <tr>
+            <td><button class="boton-circular" id="button3_decrease" onmousedown="startInterval('button3_decrease', 'status3', 60, 150,60)"
+                >🡠</button></td>
+            <td><img src="{% load static %}{% static 'enfrente.png' %}" width="150" height="150" alt="Mi Imagen"></td>
+            <td><button class="boton-circular" id="button3_increase" onmousedown="startInterval('button3_increase', 'status3', 60, 150,60)"
+                >🡢</button></td>
+
+
+
+            <td><button class="boton-circular" id="button4_decrease" onmousedown="startInterval('button4_decrease', 'status4', 0, 180,50)"
+                >⭮</button></td>
+            <td><img src="{% load static %}{% static 'base.png' %}" width="150" height="150" alt="Mi Imagen"></td>
+            <td><button class="boton-circular" id="button4_increase" onmousedown="startInterval('button4_increase', 'status4', 0, 180,50)"
+                >⭯</button></td>
+        </tr>
+
+    </table>
+    <script>
+        // Función para actualizar el estado
+        const updateStatus = (element, value) => {
+            element.textContent = `Estado actual: ${value}`;
+        };
+
+        // Función para iniciar el intervalo al mantener presionado el botón
+        const startInterval = (buttonId, statusId, minValue, maxValue, speed) => {
+            const button = document.getElementById(buttonId);
+            const statusElement = document.getElementById(statusId);
+            let value = parseInt(statusElement.textContent.split(' ')[2]);
+
+            // Incrementar o decrementar el valor al mantener presionado
+            const intervalId = setInterval(() => {
+                if ((buttonId.includes('increase') && value < maxValue) || (buttonId.includes('decrease') && value > minValue)) {
+                    value += buttonId.includes('increase') ? 1 : -1;
+                    updateStatus(statusElement, value);
+                }
+            }, speed); // Ajusta el intervalo según tus necesidades
+
+            // Detener el intervalo cuando se suelta el botón
+            button.addEventListener('mouseup', () => {
+                clearInterval(intervalId);
+            });
+
+            button.addEventListener('mouseleave', () => {
+                clearInterval(intervalId);
+            });
+        };
+    </script>
+    </script>
+</body>
+</html>
